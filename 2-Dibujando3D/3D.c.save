@@ -1,0 +1,103 @@
+/*
+ * Capitulo 2
+ *  OpenGL
+ *  Dibujando poligonos 
+ */
+
+#include <GL/glut.h>
+
+void reshape(int width, int height)
+{
+    //porción de ventana donde puede dibujar ogl
+    glViewport(0, 0, width, height);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    //delimitar el volumen de vista y son, por este orden:
+    // x_mínima, x_máxima, y_mínima, y_máxima, z_mínima, z_máxima
+    glOrtho(-3,3,-3,3,-3,3);
+    glMatrixMode(GL_MODELVIEW);
+}
+
+void display()
+{
+    // selecciona el color con el que se borra la pantalla
+    glClear(GL_COLOR_BUFFER_BIT);
+    //color con el que se va a dibujar 
+    glColor3f(1,1,1);
+    glLoadIdentity();
+	/*
+    glBegin(GL_TRIANGLES);
+      glVertex3f(-1,-1,0); // lower left vertex
+      glVertex3f(1,-1,0); // lower right vertex
+      glVertex3f(0,1,1); // upper vertex
+    glEnd();
+*/
+	/*
+	GLfloat angulo;
+	int i; 
+	glBegin(GL_LINES);
+	for (i=0; i<360; i+=3)
+	{
+	      angulo = (GLfloat)i*3.14159f/180.0f; // grados a radianes
+	      glVertex3f(0.0f, 0.0f, 0.0f);
+	      glVertex3f(cos(angulo), sin(angulo), 0.0f);
+	}
+	glEnd();
+	*/
+	//GL_LINE_STRIP une los puntos con lineas 
+	//GL_LINE_LOOP es igual a line strip pero cierra fin con inicio
+	/* glBegin(GL_LINE_STRIP);
+	      glVertex3f(0.0f, 0.0f, 0.0f);  // V0
+	      glVertex3f(2.0f, 1.0f, 0.0f);  // V1
+	      glVertex3f(2.0f, 2.0f, 0.0f);  // V2
+	glEnd();
+	*/
+	/*glShadeModel(GL_SMOOTH);
+	glBegin(GL_TRIANGLES);   
+	      glColor3f(1.0f, 0.0f, 0.0f);  // activamos el color rojo
+	      glVertex3f(-1.0f, 0.0f, 0.0f);
+	      glColor3f(0.0f,1.0f, 0.0f);  // activamos el color verde
+	      glVertex3f(1.0f,0.0f, 0.0f);
+	      glColor3f(0.0f, 0.0f, 1.0f);  // activamos el color azul
+	      glVertex3f(0.0f, 1.0f, 0.0f);
+	glEnd();
+*/
+
+	glEnable(GL_DEPTH_TEST);
+	glColor3f(1.0f, 1.0f, 1.0f);      // activamos el color blanco
+	glBegin(GL_TRIANGLES);
+	      glVertex3f(-1.0f,      -1.0f, -1.0f);
+	      glVertex3f(1.0f,      -1.0f, -1.0f);
+	      glVertex3f(0.0f,      1.0f, -1.0f);
+	glEnd();
+
+
+	glColor3f(1.0f, 0.0f, 0.0f);      // activamos el color rojo
+	glBegin(GL_POINTS);
+	      glVertex3f(0.0f,      0.0f, -2.0f);
+	      glVertex3f(2.0f,      1.0f, -2.0f);
+	glEnd(); 
+	void glutSolidTeapot(GLdouble size)
+
+    glFlush();
+   // glutSwapBuffers(); se tiene que llamar siempre que es double buff
+}
+
+void init()
+{
+    glClearColor(0,0,0,0);
+}
+
+int main(int argc, char **argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);// GLUT_DOUBLE para doble buff
+    glutInitWindowPosition(50, 50);
+    glutInitWindowSize(500, 500);
+    glutCreateWindow("Hello OpenGL");
+    init();
+    glutDisplayFunc(display);
+    glutReshapeFunc(reshape);
+    glutMainLoop();
+    return 0;
+}
