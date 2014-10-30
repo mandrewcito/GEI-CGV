@@ -92,19 +92,43 @@ void drawCube(void)
 void display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    /*hombro*/
     glLoadIdentity();
-    glTranslatef(esferax, esferay, esferaz);
     glRotatef(anguloEsferay, 1.0f, 0.0f, 0.0f);
     glRotatef(anguloEsferax, 0.0f, 1.0f, 0.0f);
     glRotatef(anguloEsferaz, 0.0f, 0.0f, 1.0f);
+    glTranslatef(0.0f, 0.0f, -5.0f);
     glutWireSphere(0.5f, 8, 8);
-    glTranslatef(esferax+anguloEsferax, anguloEsferay+esferay-1.0f, anguloEsferax+esferaz);
-  
+    /*brazo*/
     glLoadIdentity();
-  	
+    glTranslatef(0.0f, 0.0f, -5.0f);
+    glRotatef(anguloEsferay, 1.0f, 0.0f, 0.0f);
+    glRotatef(anguloEsferax, 0.0f, 1.0f, 0.0f);
+    glRotatef(anguloEsferaz, 0.0f, 0.0f, 1.0f);
+    glTranslatef(0.0f, -1.0f, -5.0f);
     glutSolidCube(1.0f);
-
- 
+    /*codo*/
+    glLoadIdentity();
+    glRotatef(anguloEsferay, 1.0f, 0.0f, 0.0f);
+    glRotatef(anguloEsferax, 0.0f, 1.0f, 0.0f);
+    glRotatef(anguloEsferaz, 0.0f, 0.0f, 1.0f);
+    glTranslatef(0.0f, -2.0f, -5.0f);
+    glutWireSphere(0.5f, 8, 8);
+    /*antebrazo*/
+    glLoadIdentity();
+    glTranslatef(0.0f, 0.0f, -5.0f);
+    glRotatef(anguloEsferay, 1.0f, 0.0f, 0.0f);
+    glRotatef(anguloEsferax, 0.0f, 1.0f, 0.0f);
+    glRotatef(anguloEsferaz, 0.0f, 0.0f, 1.0f);
+    glTranslatef(1.0f, -2.0f, -5.0f);
+    glutSolidCube(1.0f);
+    /*mano*/
+    glLoadIdentity();
+    glRotatef(anguloEsferay, 1.0f, 0.0f, 0.0f);
+    glRotatef(anguloEsferax, 0.0f, 1.0f, 0.0f);
+    glRotatef(anguloEsferaz, 0.0f, 0.0f, 1.0f);
+    glTranslatef(2.0f, -2.0f, -5.0f);
+    glutWireSphere(0.5f, 8, 8);
     glFlush();
     glLoadIdentity();
     glutSwapBuffers();
