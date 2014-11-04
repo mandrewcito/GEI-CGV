@@ -4,12 +4,9 @@
  #include <math.h> 
 GLfloat anguloCuboX = 0.0f;
 GLfloat anguloCuboY = 0.0f;
-int anguloEsferax = 0.0f;
-int anguloEsferay = 0.0f;
-int anguloEsferaz = 0.0f;
-GLfloat esferax = 0.0f;
-GLfloat esferay = 0.0f;
-GLfloat esferaz = -5.0f;
+int wired=0;
+int angulos[3][4]={{0,0,0},{0,0,0}};
+int i=0;
 
 GLint ancho=400;
 
@@ -38,27 +35,46 @@ void reshape(int width, int height)
 
 void pierna(){
 
-    /*pierna*/
+    /*muslo*/
     glPopMatrix();
     glTranslatef(1.0f, -2.5f, 0.0f);
     glPushMatrix();
     glScalef(1.0f,2.0f,1.0f);
-    glutSolidCube(1.0f);
+    if (wired)
+    glutWireSphere(0.65f,8,8);
+    else
+    glutSolidSphere(0.65f,8,8);
 
     /*rodilla*/
     glPopMatrix();
     glTranslatef(0.0f, -1.5f, 0.0f);
-    glRotatef((GLfloat)anguloEsferax, 1.0f, 0.0f, 0.0f);
-    glRotatef((GLfloat)anguloEsferay, 0.0f, 1.0f, 0.0f);
-    glRotatef((GLfloat)anguloEsferaz, 0.0f, 0.0f, 1.0f);
+    glRotatef((GLfloat)angulos[i][0], 1.0f, 0.0f, 0.0f);
+    glRotatef((GLfloat)angulos[i][1], 0.0f, 1.0f, 0.0f);
+    glRotatef((GLfloat)angulos[i][2], 0.0f, 0.0f, 1.0f);
     glPushMatrix();
+    if (wired)
+        glutWireSphere(0.5f,8,8);
+    else
     glutSolidSphere(0.5f,8,8);
 
     /*pierna*/
     glPopMatrix();
-    glTranslatef(0.0f, -1.5f, 0.0f);
+    glTranslatef(0.0f, -1.25f, 0.0f);
+    glPushMatrix();
     glScalef(1.0f,2.0f,1.0f);
-    glutSolidCube(1.0f);
+    if (wired)
+    glutWireSphere(0.5f,8,8);
+    else
+    glutSolidSphere(0.5f,8,8);
+    
+    /*pie */
+    glPopMatrix();
+    glTranslatef(0.0f, -1.0f, -0.5f);
+    glScalef(1.0f,0.5f,2.0f);
+    if (wired)
+    glutWireSphere(0.5f,8,8);
+    else
+    glutSolidSphere(0.5f,8,8);
 }
 
 void display()
@@ -70,23 +86,43 @@ void display()
     glPushMatrix();
     glPushMatrix();
     glScalef(3.0f,3.0f,1.0f);
+    if(wired)
+    glutWireCube(1.0f);
+    else
     glutSolidCube(1.0f);
+    i=0;
     pierna();
     glPopMatrix();
     glTranslatef(-2.0f, 0.0f, 0.0f);
     glPushMatrix();
-    pierna();
+    i=1;pierna();
     glFlush();
     glutSwapBuffers();
 
 }
-
+void menuapp(int value)
+{
+    if(value==1) glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if(value==2) exit(0);
+    if(value==3) wired=0;
+    if(value==4) wired=1;
+}
 void init()
 {
     glClearColor(0,0,0,0);
     glEnable(GL_DEPTH_TEST);
     ancho = 400;
     alto = 400;
+    /*menu*/
+    int submenu1;
+    submenu1=glutCreateMenu(menuapp);
+    glutAddMenuEntry("Solido", 3);
+    glutAddMenuEntry("Alambre", 4);
+    glutCreateMenu(menuapp);
+    glutAddMenuEntry("Borrar Pantalla",1);
+     glutAddSubMenu("Apariencia", submenu1);
+    glutAddMenuEntry("Salir",2);
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
  
 
@@ -113,29 +149,41 @@ void keyboard(unsigned char key, int x, int y)
       break;
     //EJE X
     case 'q':
+        angulos[0][0]=(angulos[0][0]+5)%360;
+        break;
     case 'Q':
-    anguloEsferax=(anguloEsferax+5)%360;
+        angulos[0][0]=(angulos[0][0]-5)%360;
       break;
     case 'a':
+          angulos[1][0]=(angulos[1][0]+5)%360;
+	break;
     case 'A':
-    anguloEsferax=(anguloEsferax-5)%360;
+     angulos[1][0]=(angulos[1][0]-5)%360;
       break;
     //eje Y
     case 'w':
+     angulos[0][1]=(angulos[0][1]+5)%360;
+    break;
     case 'W':
-        anguloEsferay=(anguloEsferay+5)%360;
+    angulos[0][1]=(angulos[0][1]-5)%360;
+      break;
+    case 's':
+            angulos[1][1]=(angulos[1][1]+5)%360;
       break;
     case 'S':
-    case 's':
-        anguloEsferay=(anguloEsferay-5)%360;
+        angulos[1][1]=(angulos[1][1]-5)%360;
       break;
     case 'e':
+        angulos[0][2]=(angulos[0][2]+5)%360;
+    break;
     case 'E':
-        anguloEsferaz=(anguloEsferaz+5)%360;
+        angulos[0][2]=(angulos[0][2]-5)%360;
       break;
     case 'd':
+        angulos[1][2]=(angulos[1][2]+5)%360;
+      break;
     case 'D':
-        anguloEsferaz=(anguloEsferaz-5)%360;
+        angulos[1][2]=(angulos[1][2]-5)%360;
       break;	
     case 27:   // escape
       exit(0);
