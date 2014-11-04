@@ -6,8 +6,10 @@ GLfloat anguloCuboX = 0.0f;
 GLfloat anguloCuboY = 0.0f;
 int wired=0;
 int angulos[3][4]={{0,0,0},{0,0,0}};
+int tam=2;
 int i=0;
-
+int velocidad=1000;
+int automatico=0;
 GLint ancho=400;
 
 GLint alto=400;
@@ -106,6 +108,10 @@ void menuapp(int value)
     if(value==2) exit(0);
     if(value==3) wired=0;
     if(value==4) wired=1;
+    if(value==5) velocidad=(velocidad+200)%60000;
+    if(value==6){ velocidad=1000;automatico=1;}
+    if(value==7) velocidad=(velocidad-200)%60000;
+    if(value==8) {automatico=0;velocidad=0;}
 }
 void init()
 {
@@ -118,9 +124,15 @@ void init()
     submenu1=glutCreateMenu(menuapp);
     glutAddMenuEntry("Solido", 3);
     glutAddMenuEntry("Alambre", 4);
+    int submenu2;
+    glutAddMenuEntry("mas lento", 5);
+    glutAddMenuEntry("normal / iniciar", 6);
+    glutAddMenuEntry("mas rapido", 7);
+    glutAddMenuEntry("parar", 8);
     glutCreateMenu(menuapp);
     glutAddMenuEntry("Borrar Pantalla",1);
      glutAddSubMenu("Apariencia", submenu1);
+     glutAddSubMenu("Automatico", submenu2);
     glutAddMenuEntry("Salir",2);
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
@@ -129,6 +141,7 @@ void init()
 void idle()
 {
     display();
+    
 }
 
  
@@ -190,6 +203,22 @@ void keyboard(unsigned char key, int x, int y)
       break;
     }
 }
+void TimerFunction()
+{
+    int j =0;
+    if(automatico)
+{
+    while(j<tam)
+    {
+	angulos[j][0]=(angulos[j][0]+5)%360;
+        angulos[j][1]=(angulos[j][1]+5)%360;
+        angulos[j][2]=(angulos[j][2]+5)%360;
+	j++;
+    }
+}
+    display();
+    glutTimerFunc(velocidad, TimerFunction, 1);
+}
  
 int main(int argc, char **argv)
 {
@@ -197,11 +226,12 @@ int main(int argc, char **argv)
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowPosition(100, 100);
     glutInitWindowSize(ancho, alto);
-    glutCreateWindow("Cubo 1");
+    glutCreateWindow("Cuerpo");
     init();
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
-    glutIdleFunc(idle);
+    //glutIdleFunc(idle);
+    glutTimerFunc(velocidad, TimerFunction, 1);
     glutKeyboardFunc(keyboard);
     glutMainLoop();
     return 0;
