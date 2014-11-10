@@ -1,12 +1,12 @@
 
 
 #include <GL/glut.h>
- 
+ #include <math.h> 
 GLfloat anguloCuboX = 0.0f;
 GLfloat anguloCuboY = 0.0f;
-GLfloat anguloEsferax = 0.0f;
-GLfloat anguloEsferay = 0.0f;
-GLfloat anguloEsferaz = 0.0f;
+int anguloEsferax = 0.0f;
+int anguloEsferay = 0.0f;
+int anguloEsferaz = 0.0f;
 GLfloat esferax = 0.0f;
 GLfloat esferay = 0.0f;
 GLfloat esferaz = -5.0f;
@@ -34,103 +34,47 @@ void reshape(int width, int height)
     ancho = width;
     alto = height;
 }
- 
-void drawCube(void)
-{
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glBegin(GL_QUADS);       //cara frontal
-    glVertex3f(-1.0f, -1.0f,  1.0f);
-    glVertex3f( 1.0f, -1.0f,  1.0f);
-    glVertex3f( 1.0f,  1.0f,  1.0f);
-    glVertex3f(-1.0f,  1.0f,  1.0f);
-
-    glEnd();
-
-    glColor3f(0.0f, 1.0f, 0.0f);
-
-    glBegin(GL_QUADS);       //cara trasera
-    glVertex3f( 1.0f, -1.0f, -1.0f);
-    glVertex3f(-1.0f, -1.0f, -1.0f);
-    glVertex3f(-1.0f,  1.0f, -1.0f);
-    glVertex3f( 1.0f,  1.0f, -1.0f);
-
-    glEnd();
-
-    glColor3f(0.0f, 0.0f, 1.0f);
-    glBegin(GL_QUADS);       //cara lateral izq
-    glVertex3f(-1.0f,-1.0f, -1.0f);
-    glVertex3f(-1.0f,-1.0f,  1.0f);
-    glVertex3f(-1.0f, 1.0f,  1.0f);
-    glVertex3f(-1.0f, 1.0f, -1.0f);
-    glEnd();
-
-    glColor3f(1.0f, 1.0f, 0.0f);
-    glBegin(GL_QUADS);       //cara lateral dcha
-    glVertex3f(1.0f, -1.0f,  1.0f);
-    glVertex3f(1.0f, -1.0f, -1.0f);
-    glVertex3f(1.0f,  1.0f, -1.0f);
-    glVertex3f(1.0f,  1.0f,  1.0f);
-    glEnd(); 
-
-    glColor3f(0.0f,      1.0f, 1.0f);
-    glBegin(GL_QUADS);       //cara arriba
-    glVertex3f(-1.0f, 1.0f,  1.0f);
-    glVertex3f( 1.0f, 1.0f,  1.0f);
-    glVertex3f( 1.0f, 1.0f, -1.0f);
-    glVertex3f(-1.0f, 1.0f, -1.0f);
-    glEnd();
- 
-    glColor3f(1.0f, 0.0f, 1.0f);
-    glBegin(GL_QUADS);       //cara abajo
-    glVertex3f( 1.0f,-1.0f, -1.0f);
-    glVertex3f( 1.0f,-1.0f,  1.0f);
-    glVertex3f(-1.0f,-1.0f,  1.0f);
-    glVertex3f(-1.0f,-1.0f, -1.0f);
-    glEnd();
-}
 
 void display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     /*hombro*/
-    glLoadIdentity();
-    glRotatef(anguloEsferay, 1.0f, 0.0f, 0.0f);
-    glRotatef(anguloEsferax, 0.0f, 1.0f, 0.0f);
-    glRotatef(anguloEsferaz, 0.0f, 0.0f, 1.0f);
+    glPushMatrix();
     glTranslatef(0.0f, 0.0f, -5.0f);
+    glRotatef((GLfloat)anguloEsferax, 1.0f, 0.0f, 0.0f);
+    glRotatef((GLfloat)anguloEsferay, 0.0f, 1.0f, 0.0f);
+    glRotatef((GLfloat)anguloEsferaz, 0.0f, 0.0f, 1.0f);
+    glPushMatrix();
     glutWireSphere(0.5f, 8, 8);
+    glPopMatrix();
     /*brazo*/
-    glLoadIdentity();
-    glTranslatef(0.0f, 0.0f, -5.0f);
-    glRotatef(anguloEsferay, 1.0f, 0.0f, 0.0f);
-    glRotatef(anguloEsferax, 0.0f, 1.0f, 0.0f);
-    glRotatef(anguloEsferaz, 0.0f, 0.0f, 1.0f);
-    glTranslatef(0.0f, -1.0f, -5.0f);
+    
+    glTranslatef(0.0f,-1.0f,0.0f);
+    glPushMatrix();
     glutSolidCube(1.0f);
-    /*codo*/
-    glLoadIdentity();
-    glRotatef(anguloEsferay, 1.0f, 0.0f, 0.0f);
-    glRotatef(anguloEsferax, 0.0f, 1.0f, 0.0f);
-    glRotatef(anguloEsferaz, 0.0f, 0.0f, 1.0f);
-    glTranslatef(0.0f, -2.0f, -5.0f);
-    glutWireSphere(0.5f, 8, 8);
+    glPopMatrix();
+
+        /*codo*/
+    glTranslatef(0.0f, -1.0f, 0.0f);
+    glPushMatrix();
+    glutWireSphere(0.5f, 8, 8);    
+    glPopMatrix();
+   
     /*antebrazo*/
-    glLoadIdentity();
-    glTranslatef(0.0f, 0.0f, -5.0f);
-    glRotatef(anguloEsferay, 1.0f, 0.0f, 0.0f);
-    glRotatef(anguloEsferax, 0.0f, 1.0f, 0.0f);
-    glRotatef(anguloEsferaz, 0.0f, 0.0f, 1.0f);
-    glTranslatef(1.0f, -2.0f, -5.0f);
+    glTranslatef(1.0f, 0.0f, 0.0f);
+    glPushMatrix();
     glutSolidCube(1.0f);
+    glPopMatrix();
+
+
     /*mano*/
-    glLoadIdentity();
-    glRotatef(anguloEsferay, 1.0f, 0.0f, 0.0f);
-    glRotatef(anguloEsferax, 0.0f, 1.0f, 0.0f);
-    glRotatef(anguloEsferaz, 0.0f, 0.0f, 1.0f);
-    glTranslatef(2.0f, -2.0f, -5.0f);
+    glTranslatef(1.0f, 0.0f, 0.0f);
+    glPushMatrix();
     glutWireSphere(0.5f, 8, 8);
+    glPopMatrix();
+
     glFlush();
-    glLoadIdentity();
+    glPopMatrix();
     glutSwapBuffers();
 
 }
@@ -168,28 +112,28 @@ void keyboard(unsigned char key, int x, int y)
     //EJE X
     case 'q':
     case 'Q':
-    anguloEsferax+=1.0f;
+    anguloEsferax=(anguloEsferax+5)%360;
       break;
     case 'a':
     case 'A':
-    anguloEsferax-=1.0f;
+    anguloEsferax=(anguloEsferax-5)%360;
       break;
     //eje Y
     case 'w':
     case 'W':
-    anguloEsferay+=1.0f;
+        anguloEsferay=(anguloEsferay+5)%360;
       break;
     case 'S':
     case 's':
-    anguloEsferay-=1.0f;
+        anguloEsferay=(anguloEsferay-5)%360;
       break;
     case 'e':
     case 'E':
-    anguloEsferaz+=1.0f;
+        anguloEsferaz=(anguloEsferaz+5)%360;
       break;
     case 'd':
     case 'D':
-    anguloEsferaz-=1.0f;
+        anguloEsferaz=(anguloEsferaz-5)%360;
       break;	
     case 27:   // escape
       exit(0);
